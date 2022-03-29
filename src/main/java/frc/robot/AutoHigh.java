@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class SimpleAuto {
+public class AutoHigh {
 
   // private Robot m_robot;
 
@@ -25,12 +25,13 @@ public class SimpleAuto {
   private double startTime;
 
   /** Creates a new SimpleAuto. */
-  public SimpleAuto(double startTimelocal, CANSparkMax outtake, CANSparkMax outtake2, CANSparkMax uptake,
+  public AutoHigh(double startTimelocal, CANSparkMax outtake, CANSparkMax outtake2, CANSparkMax uptake,
       DifferentialDrive robotDrive) {
 
     this.outtake = outtake;
     this.outtake2 = outtake2;
     this.uptake = uptake;
+
     this.robotDrive = robotDrive;
 
     this.startTime = startTimelocal;
@@ -38,31 +39,31 @@ public class SimpleAuto {
   }
 
   // Called when the command is initially scheduled.
+
   public void init() {
     startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   public void periodic() {
+
     double time = Timer.getFPGATimestamp();
 
-    if (time - startTime < 3) {
+    if (time - startTime < 1.5) {
 
-      this.outtake.set(.125);
-
-      this.outtake2.set(.5);
-
-      this.uptake.set(1);
-      // this.leftSpeedGroup.set(0);
-      // this.rightSpeedGroup.set(0);
+      // this.leftSpeedGroup.set(.2);
+      // this.rightSpeedGroup.set(.2);
+      this.robotDrive.arcadeDrive(.5, 0);
+    } else if (time - startTime > 3 && time - startTime < 8) {
 
       this.robotDrive.arcadeDrive(0, 0);
 
-    } else if (time - startTime > 3 && time - startTime < 8) {
-      // this.leftSpeedGroup.set(.2);
-      // this.rightSpeedGroup.set(-.2);
+      this.outtake.set(1);
+      ;
+      this.outtake2.set(1);
 
-      this.robotDrive.arcadeDrive(.5, 0);
+      this.uptake.set(1);
+
     } else {
       this.robotDrive.arcadeDrive(0, 0);
 
@@ -71,6 +72,7 @@ public class SimpleAuto {
 
       this.uptake.set(0);
     }
+
   }
 
 }
